@@ -16,11 +16,18 @@ package com.lingeringsocket.morphala.spanish
 
 import com.lingeringsocket.morphala._
 
-import MorphalaUtils._
+import net.sf.extjwnl.dictionary._
+import net.sf.extjwnl.data._
 
 import org.specs2.mutable._
 
 import scala.util._
+import scala.collection._
+import scala.jdk.CollectionConverters._
+
+import java.io._
+
+import MorphalaUtils._
 
 class SpanishVerbExternalSpec extends Specification
 {
@@ -228,6 +235,7 @@ class SpanishVerbExternalSpec extends Specification
       val ignored = UNTRIAGED ++ OBSCURE
 
       var errors = 0
+      val newIrregulars = new mutable.TreeMap[String, String]
 
       def checkConjugation(
         form : String, infinitive : String, conjugated : String) : Unit =
@@ -235,16 +243,12 @@ class SpanishVerbExternalSpec extends Specification
         if (!conjugations.contains(conjugated)) {
           println(s"INCORRECT $form $infinitive $conjugated")
           errors += 1
-          // FIXME
-          /*
-           } else if (wordnet.getVerbSenses(infinitive).nonEmpty) {
-           val bases = wordnet.getMorphology.lookupAllBaseForms(
-           POS.VERB, conjugated).asScala.toSet
-           if (!bases.contains(infinitive)) {
-           println(s"v#$conjugated -addexc $infinitive")
-           newIrregulars += 1
-           }
-           */
+        } else if (hasVerbSenses(infinitive)) {
+          val bases = WORDNET_MORPHOLOGY.lookupAllBaseForms(
+            POS.VERB, conjugated).asScala.toSet
+          if (!bases.contains(infinitive)) {
+            newIrregulars.put(conjugated, infinitive)
+          }
         }
       }
 
@@ -269,12 +273,36 @@ class SpanishVerbExternalSpec extends Specification
       })
 
       errors must be equalTo 0
+      if (newIrregulars.nonEmpty) {
+        val file = "irregular_forms.txt"
+        Using.resource(new PrintWriter(new FileWriter(file))) {
+          pw => {
+            newIrregulars.foreach {
+              case (conjugated, infinitive) => {
+                pw.println(s"v#$conjugated -addexc $infinitive")
+              }
+            }
+          }
+        }
+        println(s"New irregular forms written to $file")
+        println("Please review and merge into")
+        println("extjwnl-data-mcr30-2016's supplemental_spa.txt")
+      }
+      newIrregulars.size must be equalTo 0
     }
   }
 }
 
 object SpanishVerbExternalSpec
 {
+  private val SPANISH_DICT = Using.resource(
+    getClass.getClassLoader.getResourceAsStream("extjwnl_data_spa.xml")
+  ) {
+    stream => Dictionary.getInstance(stream)
+  }
+
+  private val WORDNET_MORPHOLOGY = SPANISH_DICT.getMorphologicalProcessor
+
   private val JEHLE_LINE_COUNT = 11466
 
   private val SUPPORTED_TAMS = Seq(
@@ -287,6 +315,14 @@ object SpanishVerbExternalSpec
     SpanishFutureIndicative,
     SpanishImperative
   )
+
+  def hasVerbSenses(lemma : String) : Boolean =
+  {
+    Option(SPANISH_DICT.getIndexWord(POS.VERB, lemma)) match {
+      case Some(indexWord) => !indexWord.getSenses.isEmpty
+      case _ => false
+    }
+  }
 
   private val UNTRIAGED = Set(
     "desleír",
