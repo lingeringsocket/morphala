@@ -9,6 +9,7 @@ jdk:
 dist: trusty
 
 install:
+  - sudo apt-get install -y dos2unix
   - src/test/resources/fetchExternal.sh
 
 script:
