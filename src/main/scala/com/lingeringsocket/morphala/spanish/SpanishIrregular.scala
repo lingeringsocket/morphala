@@ -16,7 +16,7 @@ package com.lingeringsocket.morphala.spanish
 
 import scala.collection._
 
-import SpanishTense._
+import SpanishVerbConjugator._
 import SpanishUtils._
 
 class IrregularMap(

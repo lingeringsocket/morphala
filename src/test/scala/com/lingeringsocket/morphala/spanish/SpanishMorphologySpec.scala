@@ -16,23 +16,23 @@ package com.lingeringsocket.morphala.spanish
 
 import org.specs2.mutable._
 
-class SpanishVerbConjugatorSpec extends Specification
+class SpanishMorphologySpec extends Specification
 {
-  "SpanishVerbConjugator with SpanishPresentIndicative" should
+  "SpanishMorphology with SpanishPresentIndicative" should
   {
     "conjugate regular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hablar", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "hablo"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "andar", SpanishPresentIndicative, 2, true
       ) must be equalTo(
         "andan"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "averiguar", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "averiguo"
@@ -41,12 +41,12 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "estar", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "estoy"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "ser", SpanishPresentIndicative, 2, true
       ) must be equalTo(
         "son"
@@ -55,12 +55,12 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate yo irregular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hacer", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "hago"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hacer", SpanishPresentIndicative, 1, false
       ) must be equalTo(
         "haces"
@@ -69,32 +69,32 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate stem changing verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "tender", SpanishPresentIndicative, 2, false
       ) must be equalTo(
         "tiende"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "pedir", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "pido"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "dormir", SpanishPresentIndicative, 2, true
       ) must be equalTo(
         "duermen"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "dormir", SpanishPresentIndicative, 0, true
       ) must be equalTo(
         "dormimos"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "seguir", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "sigo"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "seguir", SpanishPresentIndicative, 1, false
       ) must be equalTo(
         "sigues"
@@ -103,12 +103,12 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate cer and cir verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "conocer", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "conozco"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "conocer", SpanishPresentIndicative, 1, false
       ) must be equalTo(
         "conoces"
@@ -117,12 +117,12 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate uir verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "contribuir", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "contribuyo"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "contribuir", SpanishPresentIndicative, 0, true
       ) must be equalTo(
         "contribuimos"
@@ -130,16 +130,16 @@ class SpanishVerbConjugatorSpec extends Specification
     }
   }
 
-  "SpanishVerbConjugator with SpanishPreterite" should
+  "SpanishMorphology with SpanishPreterite" should
   {
     "conjugate regular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hablar", SpanishPreterite, 0, false
       ) must be equalTo(
         "hablé"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "mandar", SpanishPreterite, 0, false
       ) must be equalTo(
         "mandé"
@@ -148,7 +148,7 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "andar", SpanishPreterite, 2, true
       ) must be equalTo(
         "anduvieron"
@@ -157,12 +157,12 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate stem changing verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "advertir", SpanishPreterite, 2, false
       ) must be equalTo(
         "advirtió"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "dormir", SpanishPreterite, 2, false
       ) must be equalTo(
         "durmió"
@@ -171,7 +171,7 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate uir verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "constituir", SpanishPreterite, 2, false
       ) must be equalTo(
         "constituyó"
@@ -179,11 +179,11 @@ class SpanishVerbConjugatorSpec extends Specification
     }
   }
 
-  "SpanishVerbConjugator with SpanishImperfectIndicative" should
+  "SpanishMorphology with SpanishImperfectIndicative" should
   {
     "conjugate regular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hablar", SpanishImperfectIndicative, 0, false
       ) must be equalTo(
         "hablaba"
@@ -192,7 +192,7 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "ser", SpanishImperfectIndicative, 2, true
       ) must be equalTo(
         "eran"
@@ -200,11 +200,11 @@ class SpanishVerbConjugatorSpec extends Specification
     }
   }
 
-  "SpanishVerbConjugator with SpanishFutureIndicative" should
+  "SpanishMorphology with SpanishFutureIndicative" should
   {
     "conjugate regular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hablar", SpanishFutureIndicative, 0, false
       ) must be equalTo(
         "hablaré"
@@ -213,7 +213,7 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "saber", SpanishFutureIndicative, 2, true
       ) must be equalTo(
         "sabrán"
@@ -221,11 +221,11 @@ class SpanishVerbConjugatorSpec extends Specification
     }
   }
 
-  "SpanishVerbConjugator with SpanishConditional" should
+  "SpanishMorphology with SpanishConditional" should
   {
     "conjugate regular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hablar", SpanishConditional, 0, false
       ) must be equalTo(
         "hablaría"
@@ -234,7 +234,7 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "saber", SpanishConditional, 2, true
       ) must be equalTo(
         "sabrían"
@@ -242,16 +242,16 @@ class SpanishVerbConjugatorSpec extends Specification
     }
   }
 
-  "SpanishVerbConjugator with SpanishPresentSubjunctive" should
+  "SpanishMorphology with SpanishPresentSubjunctive" should
   {
     "conjugate regular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hablar", SpanishPresentSubjunctive, 0, false
       ) must be equalTo(
         "hable"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "poder", SpanishPresentSubjunctive, 0, true
       ) must be equalTo(
         "podamos"
@@ -260,7 +260,7 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "ir", SpanishPresentSubjunctive, 2, true
       ) must be equalTo(
         "vayan"
@@ -269,7 +269,7 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate zar verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "abrazar", SpanishPresentSubjunctive, 2, true
       ) must be equalTo(
         "abracen"
@@ -278,7 +278,7 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate uir verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "constituir", SpanishPresentSubjunctive, 0, true
       ) must be equalTo(
         "constituyamos"
@@ -286,11 +286,11 @@ class SpanishVerbConjugatorSpec extends Specification
     }
   }
 
-  "SpanishVerbConjugator with SpanishImperfectSubjunctive" should
+  "SpanishMorphology with SpanishImperfectSubjunctive" should
   {
     "conjugate regular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hablar", SpanishImperfectSubjunctive, 0, false
       ) must be equalTo(
         "hablara"
@@ -299,7 +299,7 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate stem changing verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "dormir", SpanishImperfectSubjunctive, 0, false
       ) must be equalTo(
         "durmiera"
@@ -308,12 +308,12 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "ir", SpanishImperfectSubjunctive, 2, true
       ) must be equalTo(
         "fueran"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "sobreseer", SpanishImperfectSubjunctive, 2, true
       ) must be equalTo(
         "sobreseyeran"
@@ -321,16 +321,16 @@ class SpanishVerbConjugatorSpec extends Specification
     }
   }
 
-  "SpanishVerbConjugator with SpanishImperative" should
+  "SpanishMorphology with SpanishImperative" should
   {
     "conjugate regular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hablar", SpanishImperative, 1, true
       ) must be equalTo(
         "hablad"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "hablar", SpanishImperative, 2, false
       ) must be equalTo(
         "hable"
@@ -339,12 +339,12 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "ir", SpanishImperative, 1, false
       ) must be equalTo(
         "ve"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "oír", SpanishImperative, 1, false
       ) must be equalTo(
         "oye"
@@ -353,12 +353,12 @@ class SpanishVerbConjugatorSpec extends Specification
 
     "conjugate guar verbs" in
     {
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "averiguar", SpanishImperative, 1, false
       ) must be equalTo(
         "averigua"
       )
-      SpanishVerbConjugator.conjugate(
+      SpanishMorphology.conjugateVerb(
         "averiguar", SpanishImperative, 2, false
       ) must be equalTo(
         "averigüe"

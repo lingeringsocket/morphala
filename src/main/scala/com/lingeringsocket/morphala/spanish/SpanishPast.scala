@@ -14,6 +14,8 @@
 // limitations under the License.
 package com.lingeringsocket.morphala.spanish
 
+import com.lingeringsocket.morphala._
+
 object SpanishPast
 {
   val IRREGULAR_MAP =
@@ -31,6 +33,6 @@ abstract class SpanishPast(
   initEndingsA : Array[String],
   initEndingsE : Array[String] = Array.empty,
   initEndingsI : Array[String] = Array.empty
-) extends SpanishTense(initEndingsA, initEndingsE, initEndingsI)
+) extends SpanishVerbConjugator(initEndingsA, initEndingsE, initEndingsI)
 {
 }

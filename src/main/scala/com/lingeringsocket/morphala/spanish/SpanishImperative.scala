@@ -14,7 +14,9 @@
 // limitations under the License.
 package com.lingeringsocket.morphala.spanish
 
-import SpanishTense._
+import com.lingeringsocket.morphala._
+
+import SpanishVerbConjugator._
 import SpanishUtils._
 
 object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
@@ -43,13 +45,17 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
       case ReflexiveIrregularMatch(conjugated) if (
         conjugation.toBeReflexive(0).nonEmpty
       ) => {
-        conjugated(conjugation.pn-1)
+        conjugated(conjugation.pn - 1)
       }
       case IrregularMatch(conjugated) => {
-        form(conjugation, conjugated(conjugation.pn-1))
+        form(conjugation, conjugated(conjugation.pn - 1))
       }
       case YoChangeMatch(iSuffix) if (
-        !((conjugation.pn < 2) && verb.contains("decir") && !verb.equals("decir"))
+        !(
+          (conjugation.pn < 2) &&
+            verb.contains("decir") &&
+            !verb.equals("decir")
+        )
       ) => {
         val (before, after) = verb.splitAt(iSuffix)
         yoForm(conjugation, before, after)

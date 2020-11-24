@@ -14,6 +14,8 @@
 // limitations under the License.
 package com.lingeringsocket.morphala.spanish
 
+import com.lingeringsocket.morphala._
+
 import SpanishUtils._
 
 object SpanishParticiple

@@ -14,7 +14,9 @@
 // limitations under the License.
 package com.lingeringsocket.morphala.spanish
 
-import SpanishTense._
+import com.lingeringsocket.morphala._
+
+import SpanishVerbConjugator._
 import SpanishUtils._
 
 object SpanishGerund

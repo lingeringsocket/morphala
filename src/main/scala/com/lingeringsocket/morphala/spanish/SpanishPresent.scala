@@ -14,9 +14,11 @@
 // limitations under the License.
 package com.lingeringsocket.morphala.spanish
 
+import com.lingeringsocket.morphala._
+
 import scala.collection._
 
-import SpanishTense._
+import SpanishVerbConjugator._
 import SpanishUtils._
 
 object SpanishPresent
@@ -31,7 +33,7 @@ abstract class SpanishPresent(
   initEndingsA : Array[String],
   initEndingsE : Array[String] = Array.empty,
   initEndingsI : Array[String] = Array.empty
-) extends SpanishTense(initEndingsA, initEndingsE, initEndingsI)
+) extends SpanishVerbConjugator(initEndingsA, initEndingsE, initEndingsI)
 {
   protected def changedForm(
     conjugation : Conjugation,
@@ -61,7 +63,8 @@ abstract class SpanishPresentSubjunctiveOrImperative extends SpanishPresent(
 {
   import SpanishPresentSubjunctiveOrImperative._
 
-  override protected def irregularMap : Map[String, List[String]] = IRREGULAR_MAP
+  override protected def irregularMap
+      : Map[String, List[String]] = IRREGULAR_MAP
 
   def carGarZar(infinitive : String) : String =
   {

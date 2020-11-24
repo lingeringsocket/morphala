@@ -12,3 +12,6 @@ lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
+src/test/resources/jehle_verb_database.csv
+src/test/resources/verbos-espanol-conjugaciones.txt
+src/test/resources/verbos-espanol.txt

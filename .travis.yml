@@ -8,6 +8,9 @@ jdk:
 
 dist: trusty
 
+install:
+  - src/test/resources/fetchExternal.sh
+
 script:
   - set -e
   - sbt ++$TRAVIS_SCALA_VERSION clean test

@@ -14,7 +14,7 @@
 // limitations under the License.
 package com.lingeringsocket.morphala.spanish
 
-import SpanishTense._
+import SpanishVerbConjugator._
 import SpanishUtils._
 
 import scala.collection._
@@ -27,7 +27,8 @@ object SpanishPreterite extends SpanishPast(
 {
   import SpanishPast._
 
-  override protected def irregularMap : Map[String, List[String]] = IRREGULAR_MAP
+  override protected def irregularMap
+      : Map[String, List[String]] = IRREGULAR_MAP
 
   override protected[spanish] def conjugate(
     conjugation : Conjugation) : String =

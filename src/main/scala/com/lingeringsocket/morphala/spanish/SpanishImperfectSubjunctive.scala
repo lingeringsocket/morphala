@@ -14,7 +14,7 @@
 // limitations under the License.
 package com.lingeringsocket.morphala.spanish
 
-import SpanishTense._
+import SpanishVerbConjugator._
 import SpanishUtils._
 
 object SpanishImperfectSubjunctive extends SpanishPast(

@@ -15,45 +15,6 @@
 package com.lingeringsocket.morphala.spanish
 
 import scala.collection._
-import scala.io._
-import scala.util._
-
-import com.fasterxml.jackson.module.scala._
-import com.fasterxml.jackson.databind._
-
-object MorphalaJson
-{
-  private val map = readJson
-
-  def wordSet(name : String) : Set[String] =
-  {
-    map(name).asInstanceOf[List[String]].toSet
-  }
-
-  def wordMap(name : String) : Map[String, String] =
-  {
-    map(name).asInstanceOf[Map[String, String]]
-  }
-
-  def wordListMap(name : String) : Map[String, List[String]] =
-  {
-    map(name).asInstanceOf[Map[String, List[String]]]
-  }
-
-  private def readJson : Map[String, _] =
-  {
-    val mapper = new ObjectMapper
-    mapper.registerModule(DefaultScalaModule)
-    val json = Using.resource(
-      Source.fromInputStream(
-        getClass.getClassLoader.getResourceAsStream(
-          "morphala/spanish.json"))
-    ) {
-      source => source.getLines().mkString("\n")
-    }
-    mapper.readValue(json, classOf[Map[String, _]])
-  }
-}
 
 object SpanishUtils
 {

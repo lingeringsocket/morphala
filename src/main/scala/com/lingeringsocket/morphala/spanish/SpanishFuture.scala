@@ -14,7 +14,9 @@
 // limitations under the License.
 package com.lingeringsocket.morphala.spanish
 
-import SpanishTense._
+import com.lingeringsocket.morphala._
+
+import SpanishVerbConjugator._
 
 object SpanishFuture
 {
@@ -26,7 +28,7 @@ object SpanishFuture
 
 abstract class SpanishFuture(
   endings : Array[String]
-) extends SpanishTense(endings)
+) extends SpanishVerbConjugator(endings)
 {
   import SpanishFuture._
 
