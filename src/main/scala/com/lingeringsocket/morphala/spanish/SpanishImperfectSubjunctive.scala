@@ -49,6 +49,12 @@ object SpanishImperfectSubjunctive extends SpanishPast(
       case "estar" | "andar" => {
         form(conjugation, root(verb) + "uvi", ERA_ENDINGS)
       }
+      case "invertir" if (conjugation.pn == 3) => {
+        form(conjugation, "invirt", ERA_ENDINGS)
+      }
+      case "presentir" if (conjugation.pn == 3) => {
+        form(conjugation, "presint", ERA_ENDINGS)
+      }
       case IrregularRootMatch(iSuffix) => {
         val (before, after) = verb.splitAt(iSuffix)
         val modifiedEndings = after match {
@@ -67,7 +73,7 @@ object SpanishImperfectSubjunctive extends SpanishPast(
       case IrregularYMatch(newRoot) => {
         form(conjugation, newRoot + "y", ERA_ENDINGS)
       }
-      case IrregularUirMatch(newRoot) => {
+      case IrregularUirMatch(newRoot) if (!newRoot.endsWith("guy")) => {
         form(conjugation, newRoot, ERA_ENDINGS)
       }
       case IrregularUcirMatch(newRoot) => {

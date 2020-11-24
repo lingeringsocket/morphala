@@ -608,11 +608,18 @@
         "decir": "dij",
         "traer": "traj",
         "haber": "hub",
+        "facer": "fic",
+        "hacer": "hic",
+        "freir": "fr",
+        "sonreir": "sonr",
         "caber": "cup"
     },
     "IMPERFECT_INDICATIVE_IRREGULAR_MAP": {
         "ver": [
             "veía", "veías", "veía", "veíamos", "veíais", "veían"
+        ],
+        "prever": [
+            "preveía", "preveías", "preveía", "preveíamos", "preveíais", "preveían"
         ],
         "ser": [
             "era", "eras", "era", "éramos", "erais", "eran"

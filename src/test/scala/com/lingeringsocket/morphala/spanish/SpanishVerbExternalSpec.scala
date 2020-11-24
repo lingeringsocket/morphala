@@ -77,16 +77,14 @@ class SpanishVerbExternalSpec extends Specification
           case "Futuro" => Some(SpanishFutureIndicative)
           case "Pretérito" => Some(SpanishPreterite)
           case "Presente" => Some(SpanishPresentIndicative)
-          // FIXME
-          // case "Imperfecto" => Some(SpanishImperfectIndicative)
+          case "Imperfecto" => Some(SpanishImperfectIndicative)
           case "Condicional" => Some(SpanishConditional)
           case _ => None
         }
       }
       case "Subjuntivo" => {
         time match {
-          // FIXME
-          // case "Imperfecto" => Some(SpanishImperfectSubjunctive)
+          case "Imperfecto" => Some(SpanishImperfectSubjunctive)
           case "Presente" => Some(SpanishPresentSubjunctive)
           case _ => None
         }
@@ -205,7 +203,9 @@ class SpanishVerbExternalSpec extends Specification
         _.getLines().map(
           _.replace("ándome", "ando").replace("éndome", "endo")
         ).toSet
-      }
+      } ++ Set(
+        "invirtéramos"
+      )
 
       val coords = SUPPORTED_TAMS.flatMap(conjugator => {
         Seq(false, true).flatMap(plural => {
