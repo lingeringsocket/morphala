@@ -22,6 +22,10 @@ import SpanishUtils._
 
 object SpanishVerbConjugator
 {
+  val REFLEXIVE = Array("me", "te", "se", "nos", "os", "se").map(_ + " ")
+
+  val TO_BE_REFLEXIVE = Array.fill(6)("")
+
   val STEM_CHANGE_E_TO_IE =
     MorphalaJson.wordSet("STEM_CHANGE_E_TO_IE")
 

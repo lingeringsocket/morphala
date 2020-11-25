@@ -15,6 +15,7 @@
 package com.lingeringsocket.morphala.spanish
 
 import SpanishUtils._
+import SpanishVerbConjugator._
 
 // FIXME immutable
 private[spanish] case class Conjugation(
@@ -27,6 +28,49 @@ private[spanish] case class Conjugation(
 
 object SpanishMorphology
 {
+  def pluralizeNoun(
+    singular : String) : String =
+  {
+    if (singular.isEmpty) {
+      return singular
+    }
+    val last = singular.last
+    if (isUnaccentedVowel(last)) {
+      singular + "s"
+    } else if (isAccentedVowel(last)) {
+      last match {
+        case 'í' | 'ú' => {
+          singular + "es"
+        }
+        case _ => {
+          singular + "s"
+        }
+      }
+    } else if (singular.endsWith("ión")) {
+      singular.stripSuffix("ión") + "iones"
+    } else if (singular.endsWith("z")) {
+      singular.stripSuffix("z") + "ces"
+    } else if (singular.endsWith("g")) {
+      singular + "ues"
+    } else if (singular.endsWith("c")) {
+      singular.stripSuffix("c") + "ques"
+    } else if (singular.endsWith("s") || singular.endsWith("x")) {
+      val vowel = singular.takeRight(2).head
+      if (isAccentedVowel(vowel)) {
+        singular.dropRight(2) + unaccentedVowel(vowel) + "ses"
+      } else {
+        singular
+      }
+    } else {
+      singular match {
+        case "carácter" => "caracteres"
+        case "espécimen" => "especímenes"
+        case "régimen" => "regímenes"
+        case _ => singular + "es"
+      }
+    }
+  }
+
   def conjugateVerb(
     infinitive : String,
     verbConjugator : SpanishVerbConjugator,

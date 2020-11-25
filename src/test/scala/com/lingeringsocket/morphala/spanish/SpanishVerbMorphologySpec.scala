@@ -16,23 +16,27 @@ package com.lingeringsocket.morphala.spanish
 
 import org.specs2.mutable._
 
-class SpanishMorphologySpec extends Specification
+import SpanishMorphology._
+import SpanishParticiple._
+import SpanishGerund._
+
+class SpanishVerbMorphologySpec extends Specification
 {
   "SpanishMorphology with SpanishPresentIndicative" should
   {
     "conjugate regular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hablar", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "hablo"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "andar", SpanishPresentIndicative, 2, true
       ) must be equalTo(
         "andan"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "averiguar", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "averiguo"
@@ -41,12 +45,12 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "estar", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "estoy"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "ser", SpanishPresentIndicative, 2, true
       ) must be equalTo(
         "son"
@@ -55,12 +59,12 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate yo irregular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hacer", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "hago"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hacer", SpanishPresentIndicative, 1, false
       ) must be equalTo(
         "haces"
@@ -69,32 +73,32 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate stem changing verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "tender", SpanishPresentIndicative, 2, false
       ) must be equalTo(
         "tiende"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "pedir", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "pido"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "dormir", SpanishPresentIndicative, 2, true
       ) must be equalTo(
         "duermen"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "dormir", SpanishPresentIndicative, 0, true
       ) must be equalTo(
         "dormimos"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "seguir", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "sigo"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "seguir", SpanishPresentIndicative, 1, false
       ) must be equalTo(
         "sigues"
@@ -103,12 +107,12 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate cer and cir verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "conocer", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "conozco"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "conocer", SpanishPresentIndicative, 1, false
       ) must be equalTo(
         "conoces"
@@ -117,12 +121,12 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate uir verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "contribuir", SpanishPresentIndicative, 0, false
       ) must be equalTo(
         "contribuyo"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "contribuir", SpanishPresentIndicative, 0, true
       ) must be equalTo(
         "contribuimos"
@@ -134,12 +138,12 @@ class SpanishMorphologySpec extends Specification
   {
     "conjugate regular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hablar", SpanishPreterite, 0, false
       ) must be equalTo(
         "hablé"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "mandar", SpanishPreterite, 0, false
       ) must be equalTo(
         "mandé"
@@ -148,7 +152,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "andar", SpanishPreterite, 2, true
       ) must be equalTo(
         "anduvieron"
@@ -157,12 +161,12 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate stem changing verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "advertir", SpanishPreterite, 2, false
       ) must be equalTo(
         "advirtió"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "dormir", SpanishPreterite, 2, false
       ) must be equalTo(
         "durmió"
@@ -171,7 +175,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate uir verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "constituir", SpanishPreterite, 2, false
       ) must be equalTo(
         "constituyó"
@@ -183,7 +187,7 @@ class SpanishMorphologySpec extends Specification
   {
     "conjugate regular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hablar", SpanishImperfectIndicative, 0, false
       ) must be equalTo(
         "hablaba"
@@ -192,7 +196,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "ser", SpanishImperfectIndicative, 2, true
       ) must be equalTo(
         "eran"
@@ -204,7 +208,7 @@ class SpanishMorphologySpec extends Specification
   {
     "conjugate regular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hablar", SpanishFutureIndicative, 0, false
       ) must be equalTo(
         "hablaré"
@@ -213,7 +217,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "saber", SpanishFutureIndicative, 2, true
       ) must be equalTo(
         "sabrán"
@@ -225,7 +229,7 @@ class SpanishMorphologySpec extends Specification
   {
     "conjugate regular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hablar", SpanishConditional, 0, false
       ) must be equalTo(
         "hablaría"
@@ -234,7 +238,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "saber", SpanishConditional, 2, true
       ) must be equalTo(
         "sabrían"
@@ -246,12 +250,12 @@ class SpanishMorphologySpec extends Specification
   {
     "conjugate regular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hablar", SpanishPresentSubjunctive, 0, false
       ) must be equalTo(
         "hable"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "poder", SpanishPresentSubjunctive, 0, true
       ) must be equalTo(
         "podamos"
@@ -260,7 +264,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "ir", SpanishPresentSubjunctive, 2, true
       ) must be equalTo(
         "vayan"
@@ -269,7 +273,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate zar verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "abrazar", SpanishPresentSubjunctive, 2, true
       ) must be equalTo(
         "abracen"
@@ -278,7 +282,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate uir verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "constituir", SpanishPresentSubjunctive, 0, true
       ) must be equalTo(
         "constituyamos"
@@ -290,7 +294,7 @@ class SpanishMorphologySpec extends Specification
   {
     "conjugate regular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hablar", SpanishImperfectSubjunctive, 0, false
       ) must be equalTo(
         "hablara"
@@ -299,7 +303,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate stem changing verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "dormir", SpanishImperfectSubjunctive, 0, false
       ) must be equalTo(
         "durmiera"
@@ -308,12 +312,12 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "ir", SpanishImperfectSubjunctive, 2, true
       ) must be equalTo(
         "fueran"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "sobreseer", SpanishImperfectSubjunctive, 2, true
       ) must be equalTo(
         "sobreseyeran"
@@ -325,12 +329,12 @@ class SpanishMorphologySpec extends Specification
   {
     "conjugate regular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hablar", SpanishImperative, 1, true
       ) must be equalTo(
         "hablad"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "hablar", SpanishImperative, 2, false
       ) must be equalTo(
         "hable"
@@ -339,12 +343,12 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "ir", SpanishImperative, 1, false
       ) must be equalTo(
         "ve"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "oír", SpanishImperative, 1, false
       ) must be equalTo(
         "oye"
@@ -353,12 +357,12 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate guar verbs" in
     {
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "averiguar", SpanishImperative, 1, false
       ) must be equalTo(
         "averigua"
       )
-      SpanishMorphology.conjugateVerb(
+      conjugateVerb(
         "averiguar", SpanishImperative, 2, false
       ) must be equalTo(
         "averigüe"
@@ -370,7 +374,7 @@ class SpanishMorphologySpec extends Specification
   {
     "conjugate regular past participle" in
     {
-      SpanishParticiple.pastParticiple(
+      pastParticiple(
         "hablar"
       ) must be equalTo(
         "hablado"
@@ -379,7 +383,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular past participle" in
     {
-      SpanishParticiple.pastParticiple(
+      pastParticiple(
         "ver"
       ) must be equalTo(
         "visto"
@@ -391,7 +395,7 @@ class SpanishMorphologySpec extends Specification
   {
     "conjugate regular gerund" in
     {
-      SpanishGerund.gerund(
+      gerund(
         "hablar"
       ) must be equalTo(
         "hablando"
@@ -400,7 +404,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate unsystematic irregular gerund" in
     {
-      SpanishGerund.gerund(
+      gerund(
         "ir"
       ) must be equalTo(
         "yendo"
@@ -409,7 +413,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate aer to ayendo gerund" in
     {
-      SpanishGerund.gerund(
+      gerund(
         "atraer"
       ) must be equalTo(
         "atrayendo"
@@ -418,7 +422,7 @@ class SpanishMorphologySpec extends Specification
 
     "conjugate stem changing gerund" in
     {
-      SpanishGerund.gerund(
+      gerund(
         "dormir"
       ) must be equalTo(
         "durmiendo"

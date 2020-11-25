@@ -18,17 +18,15 @@ import scala.collection._
 
 object SpanishUtils
 {
-  val REFLEXIVE = Array("me", "te", "se", "nos", "os", "se").map(_ + " ")
-
-  val TO_BE_REFLEXIVE = Array.fill(6)("")
-
-  private val ACCENTS = Map(
-    'a' -> "á",
-    'e' -> "é",
-    'i' -> "í",
-    'o' -> "ó",
-    'u' -> "ú"
+  private val UNACCENTED_TO_ACCENTED = Map(
+    'a' -> 'á',
+    'e' -> 'é',
+    'i' -> 'í',
+    'o' -> 'ó',
+    'u' -> 'ú'
   )
+
+  private val ACCENTED_TO_UNACCENTED = UNACCENTED_TO_ACCENTED.map(_.swap)
 
   def root(infinitive : String) : String =
   {
@@ -56,8 +54,23 @@ object SpanishUtils
     root.indexWhere(c => ("aeiou".indexOf(c) > -1)) match {
       case -1 => root
       case i => {
-        root.patch(i, ACCENTS(root(i)), 1)
+        root.patch(i, UNACCENTED_TO_ACCENTED(root(i)).toString, 1)
       }
     }
+  }
+
+  def isUnaccentedVowel(letter : Char) : Boolean =
+  {
+    UNACCENTED_TO_ACCENTED.contains(letter)
+  }
+
+  def isAccentedVowel(letter : Char) : Boolean =
+  {
+    ACCENTED_TO_UNACCENTED.contains(letter)
+  }
+
+  def unaccentedVowel(letter : Char) : Char =
+  {
+    ACCENTED_TO_UNACCENTED.get(letter).getOrElse(letter)
   }
 }
