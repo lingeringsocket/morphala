@@ -38,6 +38,7 @@ libraryDependencies ++= Seq(
   "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.9.9",
   "org.atteo" % "evo-inflector" % "1.2.2",
   "net.sf.extjwnl" % "extjwnl" % "2.0.2" % "test",
+  "com.fasterxml.jackson.dataformat" % "jackson-dataformat-xml" % "2.9.9" % "test",
   "com.lingeringsocket" % "extjwnl-data-mcr30-2016" % "0.0.1" % "test",
   "org.specs2" %% "specs2-core" % "4.10.5" % "test"
 )

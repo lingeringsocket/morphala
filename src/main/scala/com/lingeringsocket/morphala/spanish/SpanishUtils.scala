@@ -69,8 +69,18 @@ object SpanishUtils
     ACCENTED_TO_UNACCENTED.contains(letter)
   }
 
+  def isVowel(letter : Char) : Boolean =
+  {
+    isAccentedVowel(letter) || isUnaccentedVowel(letter)
+  }
+
   def unaccentedVowel(letter : Char) : Char =
   {
     ACCENTED_TO_UNACCENTED.get(letter).getOrElse(letter)
+  }
+
+  def accentedVowel(letter : Char) : Char =
+  {
+    UNACCENTED_TO_ACCENTED.get(letter).getOrElse(letter)
   }
 }

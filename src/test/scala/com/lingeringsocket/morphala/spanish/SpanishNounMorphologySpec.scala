@@ -27,15 +27,9 @@ class SpanishNounMorphologySpec extends Specification
       pluralizeNoun("perro") must be equalTo "perros"
       pluralizeNoun("casa") must be equalTo "casas"
       pluralizeNoun("color") must be equalTo "colores"
-      pluralizeNoun("avión") must be equalTo "aviones"
       pluralizeNoun("actriz") must be equalTo "actrices"
       pluralizeNoun("frac") must be equalTo "fraques"
       pluralizeNoun("zigzag") must be equalTo "zigzagues"
-      pluralizeNoun("lunes") must be equalTo "lunes"
-      pluralizeNoun("tórax") must be equalTo "tórax"
-      pluralizeNoun("inglés") must be equalTo "ingleses"
-      pluralizeNoun("sofá") must be equalTo "sofás"
-      pluralizeNoun("esquí") must be equalTo "esquíes"
 
       // in certain cases, stress position changes
       pluralizeNoun("carácter") must be equalTo "caracteres"
@@ -43,9 +37,17 @@ class SpanishNounMorphologySpec extends Specification
       pluralizeNoun("régimen") must be equalTo "regímenes"
 
       // otherwise, preserve stress position
-      // FIXME:  not working yet
+      pluralizeNoun("sofá") must be equalTo "sofás"
+      pluralizeNoun("esquí") must be equalTo "esquíes"
+      pluralizeNoun("león") must be equalTo "leones"
+      pluralizeNoun("imagen") must be equalTo "imágenes"
+      pluralizeNoun("avión") must be equalTo "aviones"
+      pluralizeNoun("inglés") must be equalTo "ingleses"
+      pluralizeNoun("cachupín") must be equalTo "cachupines"
 
-      // pluralizeNoun("imagen") must be equalTo "imágenes"
+      // weird cases
+      pluralizeNoun("tórax") must be equalTo "tórax"
+      pluralizeNoun("lunes") must be equalTo "lunes"
     }
   }
 }

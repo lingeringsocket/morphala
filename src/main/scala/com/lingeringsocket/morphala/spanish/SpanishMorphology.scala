@@ -28,45 +28,137 @@ private[spanish] case class Conjugation(
 
 object SpanishMorphology
 {
+  private def nextToVowel(word : String, i : Int) : Boolean =
+  {
+    val before = {
+      if (i == 0) {
+        false
+      } else {
+        isVowel(word(i - 1))
+      }
+    }
+    val after = {
+      if (i == (word.size - 1)) {
+        false
+      } else {
+        isVowel(word(i + 1))
+      }
+    }
+    before || after
+  }
+
+  private def analyzeStress(
+    word : String
+  ) : (Seq[Int], Int, Int) =
+  {
+    val noThongs = word.replace("uái", "XáX").
+      replace("uiái", "XXaX").replace("iái", "XaX").
+      replace("iéi", "XéX").replace("ai", "aX").
+      replace("ei", "eX").replace("oi", "oX").
+      replace("ui", "Xi").replace("au", "aX").
+      replace("eu", "eX").replace("ia", "Xa").
+      replace("ie", "Xe").replace("io", "Xo").
+      replace("iu", "iX").replace("ua", "Xa").
+      replace("ue", "Xe").replace("uo", "Xo")
+    val vowelPos = word.indices.filter(i => {
+      val letter = noThongs(i)
+      isVowel(letter)
+    })
+    if (vowelPos.isEmpty) {
+      (vowelPos, -1, -1)
+    } else {
+      val accentedVowelPos = vowelPos.filter(i => isAccentedVowel(word(i))).
+        headOption.getOrElse(-1)
+      val last = word.last
+      val naturalPos = {
+        if (isUnaccentedVowel(last) || (last == 'n') || (last == 's')) {
+          vowelPos.takeRight(2).head
+        } else {
+          vowelPos.last
+        }
+      }
+      (vowelPos, accentedVowelPos, naturalPos)
+    }
+  }
+
   def pluralizeNoun(
     singular : String) : String =
   {
-    if (singular.isEmpty) {
+    val (vowelPos, accentedVowelPos, naturalPos) = analyzeStress(singular)
+    if (singular.isEmpty || vowelPos.isEmpty) {
       return singular
     }
     val last = singular.last
-    if (isUnaccentedVowel(last)) {
-      singular + "s"
-    } else if (isAccentedVowel(last)) {
-      last match {
-        case 'í' | 'ú' => {
-          singular + "es"
+    val plural = {
+      if (isUnaccentedVowel(last)) {
+        singular + "s"
+      } else if (isAccentedVowel(last)) {
+        last match {
+          case 'í' | 'ú' => {
+            return singular + "es"
+          }
+          case _ => {
+            singular + "s"
+          }
         }
-        case _ => {
-          singular + "s"
+      } else if (singular.endsWith("z")) {
+        singular.stripSuffix("z") + "ces"
+      } else if (singular.endsWith("g")) {
+        singular + "ues"
+      } else if (singular.endsWith("c")) {
+        singular.stripSuffix("c") + "ques"
+      } else if (singular.endsWith("s") || singular.endsWith("x")) {
+        val vowel = singular.takeRight(2).head
+        if (isAccentedVowel(vowel)) {
+          singular.dropRight(2) + unaccentedVowel(vowel) + "ses"
+        } else {
+          singular
+        }
+      } else {
+        singular match {
+          case "carácter" => return "caracteres"
+          case "espécimen" => return "especímenes"
+          case "régimen" => return "regímenes"
+          case _ => singular + "es"
         }
       }
-    } else if (singular.endsWith("ión")) {
-      singular.stripSuffix("ión") + "iones"
-    } else if (singular.endsWith("z")) {
-      singular.stripSuffix("z") + "ces"
-    } else if (singular.endsWith("g")) {
-      singular + "ues"
-    } else if (singular.endsWith("c")) {
-      singular.stripSuffix("c") + "ques"
-    } else if (singular.endsWith("s") || singular.endsWith("x")) {
-      val vowel = singular.takeRight(2).head
-      if (isAccentedVowel(vowel)) {
-        singular.dropRight(2) + unaccentedVowel(vowel) + "ses"
+    }
+    val (vowelPosPlural, accentedVowelPosPlural, naturalPosPlural) =
+      analyzeStress(plural)
+    if (accentedVowelPos == -1) {
+      if (accentedVowelPosPlural == -1) {
+        if (naturalPos == naturalPosPlural) {
+          // natural stress is preserved
+          plural
+        } else {
+          // preserve original stress
+          plural.patch(
+            naturalPos,
+            accentedVowel(plural(naturalPos)).toString,
+            1)
+        }
       } else {
-        singular
+        // already explicitly accented
+        plural
       }
     } else {
-      singular match {
-        case "carácter" => "caracteres"
-        case "espécimen" => "especímenes"
-        case "régimen" => "regímenes"
-        case _ => singular + "es"
+      if (accentedVowelPos == naturalPosPlural) {
+        plural(accentedVowelPos) match {
+          case 'í' | 'ú' if (nextToVowel(plural, accentedVowelPos)) => {
+            // preserve accent to avoid creating a diphthong
+            plural
+          }
+          case _ => {
+            // accent has become redundant
+            plural.patch(
+              accentedVowelPos,
+              unaccentedVowel(plural(accentedVowelPos)).toString,
+              1)
+          }
+        }
+      } else {
+        // already explicitly accented
+        plural
       }
     }
   }

@@ -19,12 +19,17 @@ set -e
 
 data_dir_rel=`dirname "${BASH_SOURCE[0]}"`
 data_dir=`readlink -f ${data_dir_rel}`
+
 jehle_url="https://github.com/ghidinelli/fred-jehle-spanish-verbs"
 jehle_hash="b9c93b4b01fdbee2085b5154f911f55e41cd5b57"
+
 lemarios_url="https://github.com/olea/lemarios"
 lemarios_hash="441c352ffa7478b7498c081ce48c79d5d9c926c7"
 
 pushd ${data_dir}
+
+rm -f jehle_verb_database.csv
+rm -f verbos-espanol*.txt
 
 wget ${jehle_url}/raw/${jehle_hash}/jehle_verb_database.csv
 dos2unix jehle_verb_database.csv
