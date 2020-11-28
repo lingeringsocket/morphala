@@ -71,7 +71,7 @@ object SpanishMorphology
         headOption.getOrElse(-1)
       val last = word.last
       val naturalPos = {
-        if (isUnaccentedVowel(last) || (last == 'n') || (last == 's')) {
+        if (isVowel(last) || (last == 'n') || (last == 's')) {
           vowelPos.takeRight(2).head
         } else {
           vowelPos.last
@@ -81,11 +81,99 @@ object SpanishMorphology
     }
   }
 
+  private def adjustStress(
+    before : String,
+    after : String
+  ) : String =
+  {
+    val (vowelPosBefore, accentedVowelPosBefore, naturalPosBefore) =
+      analyzeStress(before)
+    val (vowelPosAfter, accentedVowelPosAfter, naturalPosAfter) =
+      analyzeStress(after)
+    if (vowelPosBefore.isEmpty || vowelPosAfter.isEmpty) {
+      return after
+    }
+    if (accentedVowelPosBefore == -1) {
+      if (accentedVowelPosAfter == -1) {
+        if (naturalPosBefore == naturalPosAfter) {
+          // natural stress is preserved
+          after
+        } else {
+          if (after.size > naturalPosBefore) {
+            // preserve original stress
+            after.patch(
+              naturalPosBefore,
+              accentedVowel(after(naturalPosBefore)).toString,
+              1)
+          } else {
+            after
+          }
+        }
+      } else {
+        // already explicitly accented
+        after
+      }
+    } else {
+      if (accentedVowelPosBefore == naturalPosAfter) {
+        after(accentedVowelPosBefore) match {
+          case 'í' | 'ú' if (nextToVowel(after, accentedVowelPosBefore)) => {
+            // preserve accent to avoid creating a diphthong
+            after
+          }
+          case _ => {
+            // accent has become redundant
+            after.patch(
+              accentedVowelPosBefore,
+              unaccentedVowel(after(accentedVowelPosBefore)).toString,
+              1)
+          }
+        }
+      } else {
+        // already explicitly accented
+        after
+      }
+    }
+  }
+
+  def singularizeNoun(
+    plural : String) : String =
+  {
+    if (plural.isEmpty) {
+      return plural
+    }
+    val singular = {
+      if (plural.endsWith("ces")) {
+        plural.stripSuffix("ces") + "z"
+      } else if (plural.endsWith("gues")) {
+        plural.stripSuffix("ues")
+      } else if (plural.endsWith("ques")) {
+        plural.stripSuffix("ques") + "c"
+      } else {
+        plural match {
+          case "caracteres" => return "carácter"
+          case "especímenes" => return "espécimen"
+          case "regímenes" => return "régimen"
+          case "lunes" | "martes" | "miércoles" |
+              "jueves" | "viernes" => plural
+          case _ => {
+            if (plural.endsWith("es")) {
+              plural.stripSuffix("es")
+            } else if (plural.endsWith("s")) {
+              plural.stripSuffix("s")
+            } else {
+              plural
+            }
+          }
+        }
+      }
+    }
+    adjustStress(plural, singular)
+  }
+
   def pluralizeNoun(
     singular : String) : String =
   {
-    val (vowelPos, accentedVowelPos, naturalPos) = analyzeStress(singular)
-    if (singular.isEmpty || vowelPos.isEmpty) {
+    if (singular.isEmpty) {
       return singular
     }
     val last = singular.last
@@ -123,44 +211,7 @@ object SpanishMorphology
         }
       }
     }
-    val (vowelPosPlural, accentedVowelPosPlural, naturalPosPlural) =
-      analyzeStress(plural)
-    if (accentedVowelPos == -1) {
-      if (accentedVowelPosPlural == -1) {
-        if (naturalPos == naturalPosPlural) {
-          // natural stress is preserved
-          plural
-        } else {
-          // preserve original stress
-          plural.patch(
-            naturalPos,
-            accentedVowel(plural(naturalPos)).toString,
-            1)
-        }
-      } else {
-        // already explicitly accented
-        plural
-      }
-    } else {
-      if (accentedVowelPos == naturalPosPlural) {
-        plural(accentedVowelPos) match {
-          case 'í' | 'ú' if (nextToVowel(plural, accentedVowelPos)) => {
-            // preserve accent to avoid creating a diphthong
-            plural
-          }
-          case _ => {
-            // accent has become redundant
-            plural.patch(
-              accentedVowelPos,
-              unaccentedVowel(plural(accentedVowelPos)).toString,
-              1)
-          }
-        }
-      } else {
-        // already explicitly accented
-        plural
-      }
-    }
+    adjustStress(singular, plural)
   }
 
   def conjugateVerb(

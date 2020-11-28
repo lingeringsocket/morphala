@@ -26,14 +26,19 @@ jehle_hash="b9c93b4b01fdbee2085b5154f911f55e41cd5b57"
 lemarios_url="https://github.com/olea/lemarios"
 lemarios_hash="441c352ffa7478b7498c081ce48c79d5d9c926c7"
 
+simplenlg_es_url="https://github.com/citiususc/SimpleNLG-ES"
+simplenlg_es_hash="9724efe2cffdaee33e3f02dbb2f38b93c9babf3f"
+
 pushd ${data_dir}
 
 rm -f jehle_verb_database.csv
 rm -f verbos-espanol*.txt
+rm -f default-spanish-lexicon.xml
 
 wget ${jehle_url}/raw/${jehle_hash}/jehle_verb_database.csv
 dos2unix jehle_verb_database.csv
 wget ${lemarios_url}/raw/${lemarios_hash}/verbos-espanol.txt
 wget ${lemarios_url}/raw/${lemarios_hash}/verbos-espanol-conjugaciones.txt
+wget ${simplenlg_es_url}/raw/${simplenlg_es_hash}/src/main/resources/default-spanish-lexicon.xml
 
 popd
