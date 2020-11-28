@@ -16,7 +16,6 @@ package com.lingeringsocket.morphala.spanish
 
 import com.lingeringsocket.morphala._
 
-import net.sf.extjwnl.dictionary._
 import net.sf.extjwnl.data._
 
 import org.specs2.mutable._
@@ -32,6 +31,7 @@ import MorphalaUtils._
 class SpanishVerbExternalSpec extends Specification
 {
   import SpanishVerbExternalSpec._
+  import WordnetDictionaries._
 
   private def parseLine(line : String) : Seq[String] =
   {
@@ -244,7 +244,7 @@ class SpanishVerbExternalSpec extends Specification
           println(s"INCORRECT $form $infinitive $conjugated")
           errors += 1
         } else if (hasVerbSenses(infinitive)) {
-          val bases = WORDNET_MORPHOLOGY.lookupAllBaseForms(
+          val bases = SPANISH_DICT.getMorphologicalProcessor.lookupAllBaseForms(
             POS.VERB, conjugated).asScala.toSet
           if (!bases.contains(infinitive)) {
             newIrregulars.put(conjugated, infinitive)
@@ -274,7 +274,7 @@ class SpanishVerbExternalSpec extends Specification
 
       errors must be equalTo 0
       if (newIrregulars.nonEmpty) {
-        val file = "irregular_forms.txt"
+        val file = "irregular_verb_forms.txt"
         Using.resource(new PrintWriter(new FileWriter(file))) {
           pw => {
             newIrregulars.foreach {
@@ -295,13 +295,7 @@ class SpanishVerbExternalSpec extends Specification
 
 object SpanishVerbExternalSpec
 {
-  private val SPANISH_DICT = Using.resource(
-    getClass.getClassLoader.getResourceAsStream("extjwnl_data_spa.xml")
-  ) {
-    stream => Dictionary.getInstance(stream)
-  }
-
-  private val WORDNET_MORPHOLOGY = SPANISH_DICT.getMorphologicalProcessor
+  import WordnetDictionaries._
 
   private val JEHLE_LINE_COUNT = 11466
 

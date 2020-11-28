@@ -22,20 +22,31 @@ import com.fasterxml.jackson.module.scala._
 import com.fasterxml.jackson.dataformat.xml._
 
 import net.sf.extjwnl.dictionary._
+import net.sf.extjwnl.data._
 
 import scala.util._
+import scala.collection._
+import scala.jdk.CollectionConverters._
+
+import java.io._
 
 import SpanishMorphology._
 import MorphalaUtils._
 
-object SpanishNounMorphologySpec
+object WordnetDictionaries
 {
-  private val ENGLISH_DICT = Dictionary.getDefaultResourceInstance
+  val ENGLISH_DICT = Dictionary.getDefaultResourceInstance
+
+  val SPANISH_DICT = Using.resource(
+    getClass.getClassLoader.getResourceAsStream("extjwnl_data_spa.xml")
+  ) {
+    stream => Dictionary.getInstance(stream)
+  }
 }
 
 class SpanishNounMorphologySpec extends Specification
 {
-  import SpanishNounMorphologySpec._
+  import WordnetDictionaries._
 
   private def checkPlural(singular : String, plural : String) =
   {
@@ -106,6 +117,44 @@ class SpanishNounMorphologySpec extends Specification
         }
       })
       count must be equalTo 340
+    }
+
+    "verify irregular forms" in
+    {
+      val newIrregulars = new mutable.TreeMap[String, String]
+
+      val dict = SPANISH_DICT
+      val morphProcessor = dict.getMorphologicalProcessor
+      dict.getIndexWordIterator(POS.NOUN).asScala.foreach(noun => {
+        val singular = noun.getLemma
+        val plural = pluralizeNoun(singular)
+        if (singular.contains(' ') || singular.startsWith("`") || (singular == plural)) {
+          // ignore these
+        } else {
+          val bases = morphProcessor.lookupAllBaseForms(
+            POS.NOUN, plural).asScala.toSet
+          if (!bases.contains(singular)) {
+            newIrregulars.put(plural, singular)
+          }
+        }
+      })
+
+      if (newIrregulars.nonEmpty) {
+        val file = "irregular_noun_forms.txt"
+        Using.resource(new PrintWriter(new FileWriter(file))) {
+          pw => {
+            newIrregulars.foreach {
+              case (plural, singular) => {
+                pw.println(s"n#$plural -addexc $singular")
+              }
+            }
+          }
+        }
+        println(s"New irregular forms written to $file")
+        println("Please review and merge into")
+        println("extjwnl-data-mcr30-2016's supplemental_spa.txt")
+      }
+      newIrregulars.size must be equalTo 0
     }
   }
 }
