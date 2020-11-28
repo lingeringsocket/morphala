@@ -18,4 +18,4 @@ install:
 
 script:
   - set -e
-  - sbt ++$TRAVIS_SCALA_VERSION clean test
+  - sbt ++$TRAVIS_SCALA_VERSION clean test scalastyle test:scalastyle

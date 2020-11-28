@@ -128,7 +128,9 @@ class SpanishNounMorphologySpec extends Specification
       dict.getIndexWordIterator(POS.NOUN).asScala.foreach(noun => {
         val singular = noun.getLemma
         val plural = pluralizeNoun(singular)
-        if (singular.contains(' ') || singular.startsWith("`") || (singular == plural)) {
+        if (singular.contains(' ') || singular.startsWith("`") ||
+          (singular == plural))
+        {
           // ignore these
         } else {
           val bases = morphProcessor.lookupAllBaseForms(
