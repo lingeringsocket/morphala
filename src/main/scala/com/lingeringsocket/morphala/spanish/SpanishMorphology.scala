@@ -170,6 +170,12 @@ object SpanishMorphology
     adjustStress(plural, singular)
   }
 
+  def pluralizeAdjective(
+    singular : String) : String =
+  {
+    pluralizeNoun(singular)
+  }
+
   def pluralizeNoun(
     singular : String) : String =
   {

@@ -35,13 +35,13 @@ traceLevel.withRank(KeyRanks.Invisible) := 100
 resolvers ++= Seq(Resolver.sonatypeRepo("snapshots"), Resolver.mavenLocal)
 
 libraryDependencies ++= Seq(
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.9.9",
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.12.0-rc2",
   "org.atteo" % "evo-inflector" % "1.2.2",
   "net.sf.extjwnl" % "extjwnl" % "2.0.2" % "test",
   "net.sf.extjwnl" % "extjwnl" % "2.0.2" % "test",
   "net.sf.extjwnl" % "extjwnl-data-wn31" % "1.2" % "test",
   "com.lingeringsocket" % "extjwnl-data-mcr30-2016" % "0.0.1" % "test",
-  "com.fasterxml.jackson.dataformat" % "jackson-dataformat-xml" % "2.9.9" % "test",
+  "com.fasterxml.jackson.dataformat" % "jackson-dataformat-xml" % "2.12.0-rc2" % "test",
   "org.specs2" %% "specs2-core" % "4.10.5" % "test"
 )
 
