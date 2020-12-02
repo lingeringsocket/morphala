@@ -31,29 +31,29 @@ object SpanishImperfectSubjunctive extends SpanishPast(
     "era", "eras", "era", "éramos", "erais", "eran")
 
   override protected[spanish] def conjugate(
-    conjugation : Conjugation) : String =
+    input : ConjugationInput) : String =
   {
-    val verb = conjugation.verb
+    val verb = input.verb
     def endings = endingsAEI(verb)
 
     verb match {
       case "ir" | "ser" => {
-        form(conjugation, "", IR_SER_CONJUGATED)
+        form(input, "", IR_SER_CONJUGATED)
       }
       case "dar" => {
-        form(conjugation, root(verb), endingsE)
+        form(input, root(verb), endingsE)
       }
       case "reir" => {
-        form(conjugation, "r", endingsE)
+        form(input, "r", endingsE)
       }
       case "estar" | "andar" => {
-        form(conjugation, root(verb) + "uvi", ERA_ENDINGS)
+        form(input, root(verb) + "uvi", ERA_ENDINGS)
       }
-      case "invertir" if (conjugation.pn == 3) => {
-        form(conjugation, "invirt", ERA_ENDINGS)
+      case "invertir" if (input.pn == 3) => {
+        form(input, "invirt", ERA_ENDINGS)
       }
-      case "presentir" if (conjugation.pn == 3) => {
-        form(conjugation, "presint", ERA_ENDINGS)
+      case "presentir" if (input.pn == 3) => {
+        form(input, "presint", ERA_ENDINGS)
       }
       case IrregularRootMatch(iSuffix) => {
         val (before, after) = verb.splitAt(iSuffix)
@@ -62,25 +62,25 @@ object SpanishImperfectSubjunctive extends SpanishPast(
           case _ => endings
         }
         form(
-          conjugation,
+          input,
           before + IRREGULAR_ROOT_MAP(after),
           modifiedEndings
         )
       }
       case IrregularPreteriteStemMatch(withStemChange) => {
-        form(conjugation, root(withStemChange), endings)
+        form(input, root(withStemChange), endings)
       }
       case IrregularYMatch(newRoot) => {
-        form(conjugation, newRoot + "y", ERA_ENDINGS)
+        form(input, newRoot + "y", ERA_ENDINGS)
       }
       case IrregularUirMatch(newRoot) if (!newRoot.endsWith("guy")) => {
-        form(conjugation, newRoot, ERA_ENDINGS)
+        form(input, newRoot, ERA_ENDINGS)
       }
       case IrregularUcirMatch(newRoot) => {
-        form(conjugation, newRoot, ERA_ENDINGS)
+        form(input, newRoot, ERA_ENDINGS)
       }
       case _ => {
-        form(conjugation, root(verb), endings)
+        form(input, root(verb), endings)
       }
     }
   }

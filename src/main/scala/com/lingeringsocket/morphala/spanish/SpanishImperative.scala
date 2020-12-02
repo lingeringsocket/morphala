@@ -36,44 +36,44 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
   )
 
   override protected[spanish] def conjugate(
-    conjugation : Conjugation) : String =
+    input : ConjugationInput) : String =
   {
-    val verb = conjugation.verb
+    val verb = input.verb
     def withStemChange = changeStem(verb)
 
     verb match {
       case ReflexiveIrregularMatch(conjugated) if (
-        conjugation.toBeReflexive(0).nonEmpty
+        input.isReflexive
       ) => {
-        conjugated(conjugation.pn - 1)
+        conjugated(input.pn - 1)
       }
       case IrregularMatch(conjugated) => {
-        conjugated(conjugation.pn - 1)
+        conjugated(input.pn - 1)
       }
       case YoChangeMatch(iSuffix) if (
         !(
-          (conjugation.pn < 2) &&
+          (input.pn < 2) &&
             verb.contains("decir") &&
             !verb.equals("decir")
         )
       ) => {
         val (before, after) = verb.splitAt(iSuffix)
-        yoForm(conjugation, before, after)
+        yoForm(input, before, after)
       }
       case IrregularCerCirMatch(_) => {
         val subst = substZC(verb)
-        impForm(conjugation, subst, subst, verb, subst)
+        impForm(input, subst, subst, verb, subst)
       }
       case IrregularUirMatch(newRoot) => {
-        impForm(conjugation, newRoot, verb, verb, newRoot)
+        impForm(input, newRoot, verb, verb, newRoot)
       }
       case IrregularUarIarMatch(newRoot) => {
-        impForm(conjugation, newRoot, verb, verb, root(verb))
+        impForm(input, newRoot, verb, verb, root(verb))
       }
       case _ => {
         val truncatedGerund = SpanishGerund.truncated(verb)
         impForm(
-          conjugation,
+          input,
           carGarZar(withStemChange),
           carGarZar(verb),
           verb,
@@ -83,21 +83,21 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
   }
 
   private def impForm(
-    conjugation : Conjugation, withStemChange : String, verb : String,
+    input : ConjugationInput, withStemChange : String, verb : String,
     originalVerb : String, withSmallChange : String) : String =
   {
     def endings = endingsAEI(originalVerb)
 
-    if (conjugation.pn == 1) {
+    if (input.pn == 1) {
       changeStem(originalVerb) match {
         case IrregularUirMatch(newRoot) => {
-          suffixedForm(newRoot + "e", conjugation)
+          suffixedForm(newRoot + "e", input)
         }
         case IrregularUarIarMatch(newRoot) => {
-          suffixedForm(newRoot + "a", conjugation)
+          suffixedForm(newRoot + "a", input)
         }
         case IrregularGuarMatch(newRoot) => {
-          suffixedForm(newRoot + "ua", conjugation)
+          suffixedForm(newRoot + "ua", input)
         }
         case _ => {
           val vowel = {
@@ -107,49 +107,48 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
               'e'
             }
           }
-          suffixedForm(root(changeStem(originalVerb)) + vowel, conjugation)
+          suffixedForm(root(changeStem(originalVerb)) + vowel, input)
         }
       }
     } else if (
-      ((conjugation.pn == 2) || (conjugation.pn == 5)) &&
+      ((input.pn == 2) || (input.pn == 5)) &&
         originalVerb.endsWith("guar")
     ) {
       suffixedForm(
         changeStem(originalVerb).take(originalVerb.size - 3) +
-          irregularEndings("guar")(conjugation.pn),
-        conjugation)
-    } else if (conjugation.pn == 3) {
-      if (conjugation.toBeReflexive.head.nonEmpty) {
+          irregularEndings("guar")(input.pn),
+        input)
+    } else if (input.pn == 3) {
+      if (input.isReflexive) {
         if (endings.head.equals("e")) {
           withSmallChange + "émonos"
         } else {
           withSmallChange + "ámonos"
         }
       } else {
-        form(conjugation, withSmallChange, endings)
+        form(input, withSmallChange, endings)
       }
-    } else if (conjugation.pn == 4) {
-      vosotrosForm(originalVerb, conjugation)
+    } else if (input.pn == 4) {
+      vosotrosForm(originalVerb, input)
     } else {
-      suffixedForm(withStemChange + endings(conjugation.pn), conjugation)
+      suffixedForm(withStemChange + endings(input.pn), input)
     }
   }
 
   private def suffixedForm(
-    conjugated : String, conjugation : Conjugation) : String =
+    conjugated : String, input : ConjugationInput) : String =
   {
-    if (conjugation.toBeReflexive.head.nonEmpty) {
-      val suffixed =
-        conjugated + conjugation.toBeReflexive(conjugation.pn).stripSuffix(" ")
+    if (input.isReflexive) {
+      val suffixed = conjugated + input.reflexivePronoun
       adjustStress(conjugated, suffixed)
     } else {
       conjugated
     }
   }
 
-  private def vosotrosForm(verb : String, conjugation : Conjugation) : String =
+  private def vosotrosForm(verb : String, input : ConjugationInput) : String =
   {
-    if (conjugation.toBeReflexive.head.nonEmpty) {
+    if (input.isReflexive) {
       val ending = {
         val ev = endVowel(verb)
         if (ev == 'i') {
@@ -161,19 +160,19 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
           s"${ev}os"
         }
       }
-      root(conjugation.original) + ending
+      root(input.originalVerb) + ending
     } else {
-      form(conjugation, conjugation.original.dropRight(1) + "d")
+      form(input, input.originalVerb.dropRight(1) + "d")
     }
   }
 
   private def yoForm(
-    conjugation : Conjugation, before : String, verb : String) : String =
+    input : ConjugationInput, before : String, verb : String) : String =
   {
     def endings = endingsAEI(verb)
 
     val withChangedStem = YO_CHANGE_MAP(verb)
-    if (conjugation.pn == 1) {
+    if (input.pn == 1) {
       verb match {
         case YoIrregularMatch(base) => {
           val rebase = {
@@ -183,7 +182,7 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
               base
             }
           }
-          suffixedForm(before + rebase, conjugation)
+          suffixedForm(before + rebase, input)
         }
         case _ => {
           val vowel = {
@@ -193,12 +192,10 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
               "e"
             }
           }
-          suffixedForm(before + root(changeStem(verb)) + vowel, conjugation)
+          suffixedForm(before + root(changeStem(verb)) + vowel, input)
         }
       }
-    } else if ((conjugation.pn == 3) &&
-      conjugation.toBeReflexive.head.nonEmpty
-    ) {
+    } else if ((input.pn == 3) && input.isReflexive) {
       before + withChangedStem.dropRight(1) + {
         if (endings.head == "e") {
           "émonos"
@@ -206,12 +203,12 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
           "ámonos"
         }
       }
-    } else if (conjugation.pn == 4) {
-      vosotrosForm(verb, conjugation)
+    } else if (input.pn == 4) {
+      vosotrosForm(verb, input)
     } else {
       suffixedForm(
-        before + withChangedStem.dropRight(1) + endings(conjugation.pn),
-        conjugation)
+        before + withChangedStem.dropRight(1) + endings(input.pn),
+        input)
     }
   }
 }

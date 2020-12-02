@@ -33,19 +33,19 @@ abstract class SpanishFuture(
   import SpanishFuture._
 
   override protected[spanish] def conjugate(
-    conjugation : Conjugation) : String =
+    input : ConjugationInput) : String =
   {
-    val verb = conjugation.verb
+    val verb = input.verb
     val endings = endingsA
     verb match {
       case IrregularRootMatch(iSuffix) if (
         verb.equals("decir") || !verb.contains("decir")
       )=> {
         val (before, after) = verb.splitAt(iSuffix)
-        form(conjugation, before + IRREGULAR_ROOT_MAP(after), endings)
+        form(input, before + IRREGULAR_ROOT_MAP(after), endings)
       }
       case _ => {
-        form(conjugation, verb, endings)
+        form(input, verb, endings)
       }
     }
   }

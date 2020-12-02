@@ -36,17 +36,17 @@ abstract class SpanishPresent(
 ) extends SpanishVerbConjugator(initEndingsA, initEndingsE, initEndingsI)
 {
   protected def changedForm(
-    conjugation : Conjugation,
+    input : ConjugationInput,
     stemChangedRoot : String,
     root : String,
     ends : Array[String]
   ) : String =
   {
-    val chosenRoot = conjugation.pn match {
+    val chosenRoot = input.pn match {
       case 3 | 4 => root
       case _ => stemChangedRoot
     }
-    form(conjugation, chosenRoot, ends)
+    form(input, chosenRoot, ends)
   }
 }
 

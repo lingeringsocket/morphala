@@ -22,9 +22,38 @@ import SpanishUtils._
 
 object SpanishVerbConjugator
 {
-  val REFLEXIVE = Array("me", "te", "se", "nos", "os", "se").map(_ + " ")
+  case class ConjugationInput(
+    verb : String,
+    pn : Int,
+    originalVerb : String,
+    isReflexive : Boolean
+  )
+  {
+    def reflexivePronoun : String =
+    {
+      if (isReflexive) {
+        pn match {
+          case 0 => "me"
+          case 1 => "te"
+          case 2 => "se"
+          case 3 => "nos"
+          case 4 => "os"
+          case 5 => "se"
+        }
+      } else {
+        ""
+      }
+    }
 
-  val TO_BE_REFLEXIVE = Array.fill(6)("")
+    def reflexivePrefix : String =
+    {
+      if (isReflexive) {
+        reflexivePronoun + " "
+      } else {
+        ""
+      }
+    }
+  }
 
   val STEM_CHANGE_E_TO_IE =
     MorphalaJson.wordSet("STEM_CHANGE_E_TO_IE")
@@ -135,20 +164,18 @@ object SpanishVerbConjugator
   }
 
   def form(
-    conjugation : Conjugation,
+    input : ConjugationInput,
     root : String) : String =
   {
-    val pn = conjugation.pn
-    conjugation.toBeReflexive(pn) + root
+    input.reflexivePrefix + root
   }
 
   def form(
-    conjugation : Conjugation,
+    input : ConjugationInput,
     root : String,
     ends : Array[String]) : String =
   {
-    val pn = conjugation.pn
-    conjugation.toBeReflexive(pn) + root + ends(pn)
+    input.reflexivePrefix + root + ends(input.pn)
   }
 }
 
@@ -158,6 +185,8 @@ abstract class SpanishVerbConjugator(
   initEndingsI : Array[String] = Array.empty
 )
 {
+  import SpanishVerbConjugator._
+
   protected val endingsA = initEndingsA
 
   protected val endingsE = fillEndings(initEndingsE, endingsA)
@@ -175,7 +204,7 @@ abstract class SpanishVerbConjugator(
   }
 
   protected[spanish] def conjugate(
-    conjugation : Conjugation) : String
+    input : ConjugationInput) : String
 
   protected def endingsAEI(verb : String) : Array[String] =
   {

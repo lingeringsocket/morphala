@@ -25,40 +25,40 @@ object SpanishPresentSubjunctive extends SpanishPresentSubjunctiveOrImperative
   object IrregularMatch extends IrregularArrayMap(IRREGULAR_MAP)
 
   override protected[spanish] def conjugate(
-    conjugation : Conjugation) : String =
+    input : ConjugationInput) : String =
   {
-    val verb = conjugation.verb
+    val verb = input.verb
 
     def verbRoot = root(verb)
     def endings = endingsAEI(verb)
 
     verb match {
       case IrregularMatch(conjugated) => {
-        form(conjugation, "", conjugated)
+        form(input, "", conjugated)
       }
       case YoChangeMatch(iSuffix) => {
         val (before, after) = verb.splitAt(iSuffix)
         form(
-          conjugation,
+          input,
           before + YO_CHANGE_MAP(after).dropRight(1),
           endings)
       }
       case IrregularCerCirMatch(_) => {
-        form(conjugation, substZC(verb), endings)
+        form(input, substZC(verb), endings)
       }
       case IrregularUirMatch(newRoot) => {
-        form(conjugation, newRoot, endings)
+        form(input, newRoot, endings)
       }
       case IrregularUarIarMatch(newRoot) => {
-        changedForm(conjugation, newRoot, verbRoot, endings)
+        changedForm(input, newRoot, verbRoot, endings)
       }
       case IrregularGuarMatch(newRoot) => {
-        form(conjugation, newRoot, irregularEndings("guar"))
+        form(input, newRoot, irregularEndings("guar"))
       }
       case _ => {
         val truncatedGerund = SpanishGerund.truncated(verb)
         changedForm(
-          conjugation,
+          input,
           carGarZar(changeStem(verb)),
           carGarZar(truncatedGerund + ending(verb)),
           endings

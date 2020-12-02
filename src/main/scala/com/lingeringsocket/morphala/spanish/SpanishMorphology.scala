@@ -17,15 +17,6 @@ package com.lingeringsocket.morphala.spanish
 import SpanishUtils._
 import SpanishVerbConjugator._
 
-// FIXME immutable
-private[spanish] case class Conjugation(
-  var verb : String = "",
-  var pn : Int = 0,
-  var original : String = "",
-  var isReflexive : Boolean = false,
-  var toBeReflexive : Array[String] = TO_BE_REFLEXIVE
-)
-
 object SpanishMorphology
 {
   def singularizeNoun(
@@ -119,27 +110,30 @@ object SpanishMorphology
     person : Int,
     plural : Boolean) : String =
   {
-    val conjugation = new Conjugation
-    conjugation.pn = person
-    if (plural) {
-      conjugation.pn += 3
+    val originalVerb = infinitive.stripSuffix("se")
+    val verb = {
+      // fold accent on ir verbs, but keep around the original
+      // too since we need it in some cases
+      if (endVowel(originalVerb) == 'í') {
+        root(originalVerb) + "ir"
+      } else {
+        originalVerb
+      }
     }
-    conjugation.verb = infinitive
-    if (infinitive.endsWith("se")) {
-      conjugation.isReflexive = true
-      conjugation.toBeReflexive = REFLEXIVE
-      conjugation.verb = root(infinitive)
-    } else {
-      conjugation.isReflexive = false
-      conjugation.toBeReflexive = TO_BE_REFLEXIVE
+    val isReflexive = infinitive.endsWith("se")
+    val pn = person + {
+      if (plural) {
+        3
+      } else {
+        0
+      }
     }
-    conjugation.original = conjugation.verb
-
-    // fold accent on ir verbs
-    if (endVowel(conjugation.verb) == 'í') {
-      conjugation.verb = root(conjugation.verb) + "ir"
-    }
-
-    fixOrthography(verbConjugator.conjugate(conjugation))
+    val input = new ConjugationInput(
+      verb,
+      pn,
+      originalVerb,
+      isReflexive
+    )
+    fixOrthography(verbConjugator.conjugate(input))
   }
 }

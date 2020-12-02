@@ -31,14 +31,14 @@ object SpanishPreterite extends SpanishPast(
       : Map[String, List[String]] = IRREGULAR_MAP
 
   override protected[spanish] def conjugate(
-    conjugation : Conjugation) : String =
+    input : ConjugationInput) : String =
   {
-    val verb = conjugation.verb
+    val verb = input.verb
     def endings = endingsAEI(verb)
 
     verb match {
       case IrregularMatch(conjugated) => {
-        form(conjugation, "", conjugated)
+        form(input, "", conjugated)
       }
       case IrregularRootMatch(iSuffix) => {
         val (before, after) = verb.splitAt(iSuffix)
@@ -47,48 +47,48 @@ object SpanishPreterite extends SpanishPast(
           case _ => "Ireg"
         }
         form(
-          conjugation,
+          input,
           before + IRREGULAR_ROOT_MAP(after),
           irregularEndings(mapKey)
         )
       }
       case IrregularUcirMatch(newRoot) => {
-        form(conjugation, newRoot, irregularEndings("ucir"))
+        form(input, newRoot, irregularEndings("ucir"))
       }
       case IrregularPreteriteStemMatch(withStemChange) => {
-        changedForm(conjugation, withStemChange, verb, endings)
+        changedForm(input, withStemChange, verb, endings)
       }
       case IrregularYMatch(newRoot) => {
-        form(conjugation, newRoot, irregularEndings("addY"))
+        form(input, newRoot, irregularEndings("addY"))
       }
       case IrregularUirUerMatch(newRoot) if (
-        (verb.takeRight(4).head == 'g') || ((conjugation.pn % 3) != 0)
+        (verb.takeRight(4).head == 'g') || ((input.pn % 3) != 0)
       ) => {
-        form(conjugation, newRoot, irregularEndings("uir"))
+        form(input, newRoot, irregularEndings("uir"))
       }
       case IrregularGuarMatch(newRoot) => {
-        form(conjugation, newRoot, irregularEndings("guar"))
+        form(input, newRoot, irregularEndings("guar"))
       }
-      case IrregularCarGarZarMatch(newRoot) if (conjugation.pn == 0) => {
-        form(conjugation, newRoot, endings)
+      case IrregularCarGarZarMatch(newRoot) if (input.pn == 0) => {
+        form(input, newRoot, endings)
       }
       case _ => {
-        form(conjugation, root(verb), endings)
+        form(input, root(verb), endings)
       }
     }
   }
 
   private def changedForm(
-    conjugation : Conjugation,
+    input : ConjugationInput,
     stemChangedVerb : String,
     verb : String,
     ends : Array[String]
   ) : String =
   {
-    val chosenVerb = conjugation.pn match {
+    val chosenVerb = input.pn match {
       case 2 | 5 => stemChangedVerb
       case _ => verb
     }
-    form(conjugation, root(chosenVerb), ends)
+    form(input, root(chosenVerb), ends)
   }
 }

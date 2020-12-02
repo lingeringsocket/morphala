@@ -29,15 +29,15 @@ object SpanishImperfectIndicative extends SpanishPast(
   )
 
   override protected[spanish] def conjugate(
-    conjugation : Conjugation) : String =
+    input : ConjugationInput) : String =
   {
-    val verb = conjugation.verb
+    val verb = input.verb
     verb match {
       case IrregularImperfectMatch(conjugated) => {
-        form(conjugation, "", conjugated)
+        form(input, "", conjugated)
       }
       case _ => {
-        form(conjugation, root(verb), endingsAEI(verb))
+        form(input, root(verb), endingsAEI(verb))
       }
     }
   }

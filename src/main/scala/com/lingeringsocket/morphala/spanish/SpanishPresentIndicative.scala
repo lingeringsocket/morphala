@@ -32,9 +32,9 @@ object SpanishPresentIndicative extends SpanishPresent(
   )
 
   override protected[spanish] def conjugate(
-    conjugation : Conjugation) : String =
+    input : ConjugationInput) : String =
   {
-    val verb = conjugation.verb
+    val verb = input.verb
 
     def withStemChange = changeStem(verb)
     def verbRoot = root(verb)
@@ -43,31 +43,31 @@ object SpanishPresentIndicative extends SpanishPresent(
 
     verb match {
       case IrregularMatch(conjugated) => {
-        form(conjugation, "", conjugated)
+        form(input, "", conjugated)
       }
       case YoChangeMatch(iSuffix) => {
         val (before, after) = verb.splitAt(iSuffix)
-        conjugation.pn match {
+        input.pn match {
           case 0 => {
-            form(conjugation, before + YO_CHANGE_MAP(after))
+            form(input, before + YO_CHANGE_MAP(after))
           }
           case _ => {
             changedForm(
-              conjugation, stemChangedRoot, before + root(after), endings)
+              input, stemChangedRoot, before + root(after), endings)
           }
         }
       }
       case IrregularCerCirMatch(suffixes) => {
-        form(conjugation, verb.dropRight(3), suffixes)
+        form(input, verb.dropRight(3), suffixes)
       }
       case IrregularUirMatch(newRoot) => {
-        changedForm(conjugation, newRoot, verbRoot, endings)
+        changedForm(input, newRoot, verbRoot, endings)
       }
       case IrregularUarIarMatch(newRoot) => {
-        changedForm(conjugation, newRoot, verbRoot, endings)
+        changedForm(input, newRoot, verbRoot, endings)
       }
       case _ => {
-        changedForm(conjugation, stemChangedRoot, verbRoot, endings)
+        changedForm(input, stemChangedRoot, verbRoot, endings)
       }
     }
   }
