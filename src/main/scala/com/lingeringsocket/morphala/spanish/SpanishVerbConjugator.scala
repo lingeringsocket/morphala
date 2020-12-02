@@ -134,15 +134,6 @@ object SpanishVerbConjugator
     }
   }
 
-  def endReflexive(conjugation : Conjugation, root : String) : String =
-  {
-    if (conjugation.toBeReflexive(0).isEmpty) {
-      root
-    } else {
-      accentFirstVowel(root)
-    }
-  }
-
   def form(
     conjugation : Conjugation,
     root : String) : String =

@@ -43,6 +43,25 @@ class SpanishVerbMorphologySpec extends Specification
       )
     }
 
+    "conjugate reflexive verbs" in
+    {
+      conjugateVerb(
+        "afeitarse", SpanishPresentIndicative, 0, false
+      ) must be equalTo(
+        "me afeito"
+      )
+      conjugateVerb(
+        "afeitarse", SpanishPresentIndicative, 2, false
+      ) must be equalTo(
+        "se afeita"
+      )
+      conjugateVerb(
+        "afeitarse", SpanishPresentIndicative, 0, true
+      ) must be equalTo(
+        "nos afeitamos"
+      )
+    }
+
     "conjugate unsystematic irregular verbs" in
     {
       conjugateVerb(

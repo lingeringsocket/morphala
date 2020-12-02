@@ -24,8 +24,9 @@ object SpanishParticiple
     MorphalaJson.wordMap("PARTICIPLE_IRREGULAR_MAP")
   object IrregularMatch extends IrregularMap(IRREGULAR_MAP)
 
-  def pastParticiple(verb : String) : String =
+  def pastParticiple(infinitive : String) : String =
   {
+    val verb = infinitive.stripSuffix("se")
     verb match {
       case IrregularMatch(iSuffix) => {
         val (before, after) = verb.splitAt(iSuffix)

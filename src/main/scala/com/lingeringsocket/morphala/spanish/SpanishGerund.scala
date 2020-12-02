@@ -25,9 +25,22 @@ object SpanishGerund
     MorphalaJson.wordMap("GERUND_IRREGULAR_MAP")
   )
 
-  def gerund(verb : String) : String =
+  def gerund(infinitive : String) : String =
   {
-    fixOrthography(gerundImpl(verb))
+    val (isReflexive, verb) = {
+      if (infinitive.endsWith("se")) {
+        (true, root(infinitive))
+      } else {
+        (false, infinitive)
+      }
+    }
+    val base = fixOrthography(gerundImpl(verb))
+    if (isReflexive) {
+      val full = base + "se"
+      adjustStress(base, full)
+    } else {
+      base
+    }
   }
 
   def truncated(verb : String) : String =

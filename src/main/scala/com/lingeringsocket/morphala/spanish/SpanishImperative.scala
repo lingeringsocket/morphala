@@ -48,7 +48,7 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
         conjugated(conjugation.pn - 1)
       }
       case IrregularMatch(conjugated) => {
-        form(conjugation, conjugated(conjugation.pn - 1))
+        conjugated(conjugation.pn - 1)
       }
       case YoChangeMatch(iSuffix) if (
         !(
@@ -91,13 +91,13 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
     if (conjugation.pn == 1) {
       changeStem(originalVerb) match {
         case IrregularUirMatch(newRoot) => {
-          form(conjugation, newRoot + "e")
+          suffixedForm(newRoot + "e", conjugation)
         }
         case IrregularUarIarMatch(newRoot) => {
-          form(conjugation, newRoot + "a")
+          suffixedForm(newRoot + "a", conjugation)
         }
         case IrregularGuarMatch(newRoot) => {
-          form(conjugation, newRoot + "ua")
+          suffixedForm(newRoot + "ua", conjugation)
         }
         case _ => {
           val vowel = {
@@ -107,19 +107,17 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
               'e'
             }
           }
-          endReflexive(conjugation, root(changeStem(originalVerb))) + vowel + {
-            conjugation.toBeReflexive(conjugation.pn)
-          }
+          suffixedForm(root(changeStem(originalVerb)) + vowel, conjugation)
         }
       }
     } else if (
       ((conjugation.pn == 2) || (conjugation.pn == 5)) &&
         originalVerb.endsWith("guar")
     ) {
-      form(
-        conjugation,
-        changeStem(originalVerb).take(originalVerb.size - 3),
-        irregularEndings("guar"))
+      suffixedForm(
+        changeStem(originalVerb).take(originalVerb.size - 3) +
+          irregularEndings("guar")(conjugation.pn),
+        conjugation)
     } else if (conjugation.pn == 3) {
       if (conjugation.toBeReflexive.head.nonEmpty) {
         if (endings.head.equals("e")) {
@@ -131,18 +129,41 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
         form(conjugation, withSmallChange, endings)
       }
     } else if (conjugation.pn == 4) {
-      if (conjugation.toBeReflexive.head.nonEmpty) {
-        root(conjugation.original) + "íos"
-      } else {
-        form(
-          conjugation,
-          endReflexive(conjugation, root(originalVerb)) +
-            endVowel(originalVerb) + "d")
-      }
+      vosotrosForm(originalVerb, conjugation)
     } else {
-      endReflexive(conjugation, withStemChange) + endings(conjugation.pn) + {
-        conjugation.toBeReflexive(conjugation.pn)
+      suffixedForm(withStemChange + endings(conjugation.pn), conjugation)
+    }
+  }
+
+  private def suffixedForm(
+    conjugated : String, conjugation : Conjugation) : String =
+  {
+    if (conjugation.toBeReflexive.head.nonEmpty) {
+      val suffixed =
+        conjugated + conjugation.toBeReflexive(conjugation.pn).stripSuffix(" ")
+      adjustStress(conjugated, suffixed)
+    } else {
+      conjugated
+    }
+  }
+
+  private def vosotrosForm(verb : String, conjugation : Conjugation) : String =
+  {
+    if (conjugation.toBeReflexive.head.nonEmpty) {
+      val ending = {
+        val ev = endVowel(verb)
+        if (ev == 'i') {
+          "íos"
+        } else if (verb == "mover") {
+          // according to Fred Jehle, although spanishdict.com disagrees
+          "íos"
+        } else {
+          s"${ev}os"
+        }
       }
+      root(conjugation.original) + ending
+    } else {
+      form(conjugation, conjugation.original.dropRight(1) + "d")
     }
   }
 
@@ -162,9 +183,7 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
               base
             }
           }
-          endReflexive(conjugation, before) + rebase + {
-            conjugation.toBeReflexive(conjugation.pn)
-          }
+          suffixedForm(before + rebase, conjugation)
         }
         case _ => {
           val vowel = {
@@ -174,9 +193,7 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
               "e"
             }
           }
-          endReflexive(conjugation, before + root(changeStem(verb))) + {
-            vowel + conjugation.toBeReflexive(conjugation.pn)
-          }
+          suffixedForm(before + root(changeStem(verb)) + vowel, conjugation)
         }
       }
     } else if ((conjugation.pn == 3) &&
@@ -190,15 +207,11 @@ object SpanishImperative extends SpanishPresentSubjunctiveOrImperative
         }
       }
     } else if (conjugation.pn == 4) {
-      if (conjugation.toBeReflexive.head.nonEmpty) {
-        root(conjugation.original) + "íos"
-      } else {
-        form(conjugation, conjugation.original.dropRight(1) + "d")
-      }
+      vosotrosForm(verb, conjugation)
     } else {
-      endReflexive(conjugation, before + withChangedStem.dropRight(1)) + {
-        endings(conjugation.pn) + conjugation.toBeReflexive(conjugation.pn)
-      }
+      suffixedForm(
+        before + withChangedStem.dropRight(1) + endings(conjugation.pn),
+        conjugation)
     }
   }
 }

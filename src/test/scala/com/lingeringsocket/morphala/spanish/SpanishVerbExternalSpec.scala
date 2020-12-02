@@ -142,8 +142,7 @@ class SpanishVerbExternalSpec extends Specification
         row.size must be equalTo 17
         val infinitive = parseInfinitive(row(0))
         val conjugatorOpt = parseTam(row)
-        // FIXME deal with reflexives
-        if (conjugatorOpt.nonEmpty && !infinitive.endsWith("se")) {
+        if (conjugatorOpt.nonEmpty) {
           val conjugator = conjugatorOpt.get
           val formGerund = row(13)
           val formParticiple = extractParticiple(row(15))
@@ -169,6 +168,11 @@ class SpanishVerbExternalSpec extends Specification
               }
               if ((person == 0) && (conjugator == SpanishImperative)) {
                 form must beEmpty
+              } else if (
+                (infinitive == "secarse") &&
+                  (conjugator == SpanishImperative)
+              ) {
+                // skip this one since the database has an error
               } else {
                 val conjugated = SpanishMorphology.conjugateVerb(
                   infinitive,
@@ -184,8 +188,11 @@ class SpanishVerbExternalSpec extends Specification
                     conjugated
                   }
                 }
+                val normalizedForm = {
+                  form.stripPrefix("no te ")
+                }
                 if (form.nonEmpty) {
-                  normalized must be equalTo(form)
+                  normalized must be equalTo(normalizedForm)
                 }
               }
             }
