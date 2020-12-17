@@ -81,7 +81,7 @@ class SpanishAdjectiveMorphologySpec extends Specification
         }
         println(s"New irregular forms written to $file")
         println("Please review and merge into")
-        println("extjwnl-data-mcr30-2016's supplemental_spa.txt")
+        println("extjwnl/supplemental_spa.txt")
       }
       newIrregulars.size must be equalTo 0
     }
