@@ -14,18 +14,11 @@
 // limitations under the License.
 package com.lingeringsocket.morphala
 
-import net.sf.extjwnl.dictionary._
-
-import scala.util._
+import net.sf.extjwnl.data.mcr30.alignment._
 
 object ExtjwnlDictionaries
 {
-  val ENGLISH_DICT = Dictionary.getDefaultResourceInstance
+  val ENGLISH_DICT = InterLingualIndex.getDictionary("wn31", "eng")
 
-  val SPANISH_DICT = Using.resource(
-    getClass.getClassLoader.getResourceAsStream(
-      "net/sf/extjwnl/data/mcr30/spa/res_properties.xml")
-  ) {
-    stream => Dictionary.getInstance(stream)
-  }
+  val SPANISH_DICT = InterLingualIndex.getDictionary("mcr30", "spa")
 }
