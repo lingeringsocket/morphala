@@ -14,6 +14,8 @@
 // limitations under the License.
 package com.lingeringsocket.morphala.spanish
 
+import com.lingeringsocket.morphala._
+
 import org.specs2.mutable._
 
 import net.sf.extjwnl.data._
@@ -28,7 +30,7 @@ import SpanishMorphology._
 
 class SpanishAdjectiveMorphologySpec extends Specification
 {
-  import WordnetDictionaries._
+  import ExtjwnlDictionaries._
 
   private def checkPlural(singular : String, plural : String) =
   {

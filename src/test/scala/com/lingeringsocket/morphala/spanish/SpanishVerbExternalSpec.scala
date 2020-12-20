@@ -31,7 +31,7 @@ import MorphalaUtils._
 class SpanishVerbExternalSpec extends Specification
 {
   import SpanishVerbExternalSpec._
-  import WordnetDictionaries._
+  import ExtjwnlDictionaries._
 
   private def parseLine(line : String) : Seq[String] =
   {
@@ -302,7 +302,7 @@ class SpanishVerbExternalSpec extends Specification
 
 object SpanishVerbExternalSpec
 {
-  import WordnetDictionaries._
+  import ExtjwnlDictionaries._
 
   private val JEHLE_LINE_COUNT = 11466
 

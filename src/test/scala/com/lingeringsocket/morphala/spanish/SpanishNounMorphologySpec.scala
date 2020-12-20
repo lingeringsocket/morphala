@@ -21,7 +21,6 @@ import org.specs2.mutable._
 import com.fasterxml.jackson.module.scala._
 import com.fasterxml.jackson.dataformat.xml._
 
-import net.sf.extjwnl.dictionary._
 import net.sf.extjwnl.data._
 
 import scala.util._
@@ -33,20 +32,9 @@ import java.io._
 import SpanishMorphology._
 import MorphalaUtils._
 
-object WordnetDictionaries
-{
-  val ENGLISH_DICT = Dictionary.getDefaultResourceInstance
-
-  val SPANISH_DICT = Using.resource(
-    getClass.getClassLoader.getResourceAsStream("extjwnl_data_spa.xml")
-  ) {
-    stream => Dictionary.getInstance(stream)
-  }
-}
-
 class SpanishNounMorphologySpec extends Specification
 {
-  import WordnetDictionaries._
+  import ExtjwnlDictionaries._
 
   private def checkPlural(singular : String, plural : String) =
   {

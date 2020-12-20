@@ -11,10 +11,6 @@ dist: trusty
 install:
   - sudo apt-get install -y dos2unix
   - src/test/resources/fetchExternal.sh
-  - wget https://github.com/lingeringsocket/extjwnl-data-mcr30-2016/archive/main.zip
-  - unzip main.zip
-  - pushd extjwnl-data-mcr30-2016-main && ./publishLocal.sh && popd
-  - rm -f main.zip
 
 script:
   - set -e
