@@ -23,7 +23,8 @@ object ExtjwnlDictionaries
   val ENGLISH_DICT = Dictionary.getDefaultResourceInstance
 
   val SPANISH_DICT = Using.resource(
-    getClass.getClassLoader.getResourceAsStream("net/sf/extjwnl/data/mcr30/spa/res_properties.xml")
+    getClass.getClassLoader.getResourceAsStream(
+      "net/sf/extjwnl/data/mcr30/spa/res_properties.xml")
   ) {
     stream => Dictionary.getInstance(stream)
   }
