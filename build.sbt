@@ -40,8 +40,8 @@ libraryDependencies ++= Seq(
   "net.sf.extjwnl" % "extjwnl" % "2.0.2" % "test",
   "net.sf.extjwnl" % "extjwnl" % "2.0.2" % "test",
   "net.sf.extjwnl" % "extjwnl-data-wn31" % "1.2" % "test",
-  "net.sf.extjwnl.mcr" % "extjwnl-data-spa-mcr30" % "0.0.1-SNAPSHOT" % "test",
-  "net.sf.extjwnl.mcr" % "extjwnl-data-alignment-mcr30" % "0.0.1-SNAPSHOT" % "test",
+  "net.sf.extjwnl.mcr" % "extjwnl-data-spa-mcr30" % "1.0.0-SNAPSHOT" % "test",
+  "net.sf.extjwnl.mcr" % "extjwnl-data-alignment-mcr30" % "1.0.0-SNAPSHOT" % "test",
   "com.fasterxml.jackson.dataformat" % "jackson-dataformat-xml" % "2.12.0-rc2" % "test",
   "org.specs2" %% "specs2-core" % "4.10.5" % "test"
 )
