@@ -103,7 +103,7 @@ object SpanishUtils
     before || after
   }
 
-  private def analyzeStress(
+  def analyzeStress(
     word : String
   ) : (Seq[Int], Int, Int) =
   {
