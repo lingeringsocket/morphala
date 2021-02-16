@@ -12,13 +12,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-organization := "com.lingeringsocket"
-
 name := "morphala"
 
-version := "0.1-SNAPSHOT"
+ThisBuild / organization := "com.lingeringsocket"
 
-scalaVersion := "2.13.3"
+ThisBuild / version := "0.1-SNAPSHOT"
+
+ThisBuild / scalaVersion := "2.13.3"
+
+ThisBuild / githubWorkflowBuildPreamble := Seq(
+  WorkflowStep.Sbt(List(
+    "scalastyle",
+    "test:scalastyle"
+  ), name = Some("Scalastyle")),
+  WorkflowStep.Run(List(
+    "sudo apt-get install -y dos2unix",
+    "src/test/resources/fetchExternal.sh"
+  ), name = Some("Fetch External Data"))
+)
+
+ThisBuild / githubWorkflowPublishTargetBranches := Seq()
 
 scalastyleFailOnError := true
 
